@@ -1,0 +1,26 @@
+import { Header } from '@/components/layout/header';
+import { Hero } from '@/components/layout/hero';
+import { MenuDisplay } from '@/components/menu/menu-display';
+import { getCategories, getMenuItems } from '@/lib/data';
+import { Footer } from '@/components/layout/footer';
+
+export default async function Home() {
+  const categories = await getCategories();
+  const menuItems = await getMenuItems();
+
+  return (
+    <div className="flex flex-col min-h-screen">
+      <Header />
+      <Hero />
+      <main className="flex-1 container mx-auto px-4 py-8">
+        <div id="menu" className="text-center mb-12 scroll-mt-24">
+          <h2 className="text-4xl md:text-5xl font-headline font-bold tracking-tight text-foreground mt-2">
+            Our Menu
+          </h2>
+        </div>
+        <MenuDisplay categories={categories} items={menuItems} />
+      </main>
+      <Footer />
+    </div>
+  );
+}

@@ -13,12 +13,14 @@ import type { Room } from "@/lib/types";
 import { Button } from "../ui/button";
 import { BedDouble, Users } from "lucide-react";
 import { formatCurrency } from "@/lib/utils";
+import { useLanguage } from "@/hooks/use-language";
 
 interface RoomCardProps {
   room: Room;
 }
 
 export function RoomCard({ room }: RoomCardProps) {
+  const { t } = useLanguage();
   return (
     <Card className="overflow-hidden flex flex-col group bg-white/80 dark:bg-slate-900/50 backdrop-blur-md border-white/20 dark:border-slate-800/50 shadow-xl hover:shadow-2xl hover:shadow-primary/20 transition-all duration-500 hover:-translate-y-1">
       <CardHeader className="p-0 relative overflow-hidden">
@@ -39,7 +41,7 @@ export function RoomCard({ room }: RoomCardProps) {
             className="bg-white/90 dark:bg-slate-900/90 backdrop-blur-sm border-none shadow-lg font-bold text-xs flex items-center gap-1.5 px-3 py-1"
           >
             <Users className="h-3.5 w-3.5 text-primary" />
-            <span>{room.capacity} Guests</span>
+            <span>{room.capacity} {room.capacity === 1 ? t.rooms.guest : t.rooms.guests}</span>
           </Badge>
           <Badge 
             variant="secondary" 
@@ -63,11 +65,11 @@ export function RoomCard({ room }: RoomCardProps) {
           <p className="text-2xl font-black font-headline text-primary tracking-tight">
             {formatCurrency(room.pricePerNight)} <span className="text-xs font-bold text-slate-400 dark:text-slate-500 ml-1">BIRR</span>
           </p>
-          <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500">per night</p>
+          <p className="text-[10px] uppercase font-bold tracking-widest text-slate-400 dark:text-slate-500">{t.rooms.pricePerNight}</p>
         </div>
         <div className="h-px flex-1 mx-6 bg-gradient-to-r from-primary/20 to-transparent" />
         <Button size="sm" className="rounded-full px-6 font-bold shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all active:scale-95">
-          View Details
+          {t.rooms.bookNow}
         </Button>
       </CardFooter>
     </Card>

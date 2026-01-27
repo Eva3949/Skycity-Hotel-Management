@@ -20,8 +20,8 @@ export default {
         'xs': '400px',
       },
       fontFamily: {
-        body: ['Inter', 'sans-serif'],
-        headline: ['Montserrat', 'sans-serif'],
+        body: ['Inter', 'Noto Sans Ethiopic', 'sans-serif'],
+        headline: ['Montserrat', 'Noto Sans Ethiopic', 'sans-serif'],
         code: ['monospace'],
       },
       colors: {

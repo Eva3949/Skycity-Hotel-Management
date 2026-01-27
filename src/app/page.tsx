@@ -13,11 +13,6 @@ export default async function Home() {
       <Header />
       <Hero />
       <main className="flex-1 container mx-auto px-4 py-8">
-        <div id="menu" className="text-center mb-12 scroll-mt-24">
-          <h2 className="text-4xl md:text-5xl font-headline font-bold tracking-tight text-foreground mt-2">
-            Our Menu
-          </h2>
-        </div>
         <MenuDisplay categories={categories} items={menuItems} />
       </main>
       <Footer />

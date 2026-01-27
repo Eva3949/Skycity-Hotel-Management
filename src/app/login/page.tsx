@@ -13,8 +13,10 @@ import { Terminal } from 'lucide-react';
 import { Footer } from '@/components/layout/footer';
 import { loginAction } from '@/app/actions';
 import { useToast } from '@/hooks/use-toast';
+import { useLanguage } from '@/hooks/use-language';
 
 export default function LoginPage() {
+  const { t } = useLanguage();
   const [username, setUsername] = useState('');
   const [password, setPassword] = useState('');
   const [isLoading, setIsLoading] = useState(false);
@@ -33,7 +35,7 @@ export default function LoginPage() {
 
     if (result?.error) {
       toast({
-        title: "Login Failed",
+        title: t.login.failed,
         description: result.error,
         variant: "destructive",
       });
@@ -53,8 +55,8 @@ export default function LoginPage() {
       <main className="flex-1 flex items-center justify-center bg-muted/40 py-12">
         <Card className="w-full max-w-sm">
           <CardHeader className="text-center">
-            <CardTitle className="text-2xl font-headline">Admin Login</CardTitle>
-            <CardDescription>Enter your credentials to access the dashboard.</CardDescription>
+            <CardTitle className="text-2xl font-headline">{t.login.title}</CardTitle>
+            <CardDescription>{t.login.description}</CardDescription>
           </CardHeader>
           <CardContent>
             <form
@@ -62,29 +64,29 @@ export default function LoginPage() {
               className="space-y-4"
             >
               <div className="space-y-2">
-                <Label htmlFor="username">Username</Label>
+                <Label htmlFor="username">{t.login.username}</Label>
                 <Input
                   id="username"
                   type="text"
-                  placeholder="Enter username"
+                  placeholder={t.login.enterUsername}
                   value={username}
                   onChange={(e) => setUsername(e.target.value)}
                   required
                 />
               </div>
               <div className="space-y-2">
-                <Label htmlFor="password">Password</Label>
+                <Label htmlFor="password">{t.login.password}</Label>
                 <Input
                   id="password"
                   type="password"
-                  placeholder="Enter password"
+                  placeholder={t.login.enterPassword}
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                   required
                 />
               </div>
               <Button type="submit" className="w-full" disabled={isLoading}>
-                {isLoading ? "Logging in..." : "Login"}
+                {isLoading ? t.login.loggingIn : t.login.login}
               </Button>
             </form>
           </CardContent>

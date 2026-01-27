@@ -1,6 +1,8 @@
+'use client';
 
 import Link from 'next/link';
 import { Bed, MapPin, Phone, Mail, Facebook, Instagram, Youtube } from 'lucide-react';
+import { useLanguage } from '@/hooks/use-language';
 
 const TikTokIcon = () => (
     <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" className="h-5 w-5">
@@ -17,6 +19,7 @@ const WhatsAppIcon = () => (
 );
 
 export function Footer() {
+  const { t } = useLanguage();
   const currentYear = new Date().getFullYear();
 
   return (
@@ -34,7 +37,7 @@ export function Footer() {
                 </span>
             </Link>
             <p className="text-slate-400 text-base leading-relaxed mb-8">
-              Redefining urban luxury. Experience the perfect blend of modern sophistication and timeless comfort in the heart of the city.
+              {t.footer.aboutDescription}
             </p>
             <div className="flex space-x-5">
               <Link href="#" aria-label="Facebook" className="w-10 h-10 flex items-center justify-center rounded-full bg-white/5 hover:bg-primary hover:text-white transition-all"><Facebook className="h-5 w-5" /></Link>
@@ -45,24 +48,24 @@ export function Footer() {
           </div>
 
           <div>
-            <h3 className="text-lg font-headline font-bold text-white mb-6 uppercase tracking-wider">Navigation</h3>
+            <h3 className="text-lg font-headline font-bold text-white mb-6 uppercase tracking-wider">{t.footer.navigation}</h3>
             <ul className="space-y-4 text-base">
-              <li><Link href="/" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> Home</Link></li>
-              <li><Link href="/" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> Dining Menu</Link></li>
-              <li><Link href="/rooms" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> Luxury Rooms</Link></li>
-              <li><Link href="/bookings" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> Make a Reservation</Link></li>
-              <li><Link href="#" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> Our Story</Link></li>
+              <li><Link href="/" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> {t.footer.home}</Link></li>
+              <li><Link href="/#menu" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> {t.footer.diningMenu}</Link></li>
+              <li><Link href="/rooms" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> {t.footer.luxuryRooms}</Link></li>
+              <li><Link href="/bookings" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> {t.footer.reservation}</Link></li>
+              <li><Link href="#" className="text-slate-400 hover:text-primary transition-colors flex items-center gap-2"><span>&rsaquo;</span> {t.footer.ourStory}</Link></li>
             </ul>
           </div>
 
            <div>
-            <h3 className="text-lg font-headline font-bold text-white mb-6 uppercase tracking-wider">Get in Touch</h3>
+            <h3 className="text-lg font-headline font-bold text-white mb-6 uppercase tracking-wider">{t.footer.getInTouch}</h3>
              <div className="space-y-5 text-base">
               <div className="flex items-start">
                 <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary/10 mr-4 flex-shrink-0">
                   <MapPin className="h-5 w-5 text-primary" />
                 </div>
-                <span className="text-slate-400">123 Skyline Blvd, Central District,<br />Sheger City, Ethiopia</span>
+                <span className="text-slate-400">{t.footer.address}</span>
               </div>
               <div className="flex items-center">
                 <div className="w-10 h-10 flex items-center justify-center rounded-xl bg-primary/10 mr-4 flex-shrink-0">
@@ -80,15 +83,15 @@ export function Footer() {
           </div>
           
           <div>
-            <h3 className="text-lg font-headline font-bold text-white mb-6 uppercase tracking-wider">Experience</h3>
+            <h3 className="text-lg font-headline font-bold text-white mb-6 uppercase tracking-wider">{t.footer.experience}</h3>
             <div className="space-y-6">
               <div className="p-5 rounded-2xl bg-white/5 border border-white/5">
-                <p className="font-bold text-white mb-1">Restaurant & Lounge</p>
-                <p className="text-slate-400 text-sm italic">Daily: 7:00 AM - 11:00 PM</p>
+                <p className="font-bold text-white mb-1">{t.footer.restaurantLounge}</p>
+                <p className="text-slate-400 text-sm italic">{t.footer.daily}: 7:00 AM - 11:00 PM</p>
               </div>
                <div className="p-5 rounded-2xl bg-white/5 border border-white/5">
-                <p className="font-bold text-white mb-1">Concierge Desk</p>
-                <p className="text-slate-400 text-sm italic">24/7 Premium Support</p>
+                <p className="font-bold text-white mb-1">{t.footer.concierge}</p>
+                <p className="text-slate-400 text-sm italic">{t.footer.support247}</p>
               </div>
             </div>
           </div>
@@ -97,13 +100,13 @@ export function Footer() {
 
         <div className="mt-20 pt-10 border-t border-white/5">
             <div className="flex flex-col md:flex-row justify-between items-center text-sm text-slate-500 gap-8">
-                <p className="text-center md:text-left">&copy; {currentYear} Skycity Hotel Global. All rights reserved.</p>
+                <p className="text-center md:text-left">&copy; {currentYear} Skycity Hotel Global. {t.footer.rights}</p>
                 <div className="flex flex-wrap justify-center gap-8">
-                    <Link href="#" className="hover:text-primary transition-colors">Privacy</Link>
-                    <Link href="#" className="hover:text-primary transition-colors">Terms</Link>
-                    <Link href="#" className="hover:text-primary transition-colors">Legal</Link>
+                    <Link href="#" className="hover:text-primary transition-colors">{t.footer.privacy}</Link>
+                    <Link href="#" className="hover:text-primary transition-colors">{t.footer.terms}</Link>
+                    <Link href="#" className="hover:text-primary transition-colors">{t.footer.legal}</Link>
                 </div>
-                 <p className="text-center md:text-right font-medium">Crafted by <a href="#" className="text-slate-300 hover:text-primary transition-colors">EvaDevStudio</a></p>
+                 <p className="text-center md:text-right font-medium">{t.footer.craftedBy} <a href="#" className="text-slate-300 hover:text-primary transition-colors">EvaDevStudio</a></p>
             </div>
         </div>
       </div>

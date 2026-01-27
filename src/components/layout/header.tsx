@@ -7,8 +7,11 @@ import { Button } from '@/components/ui/button';
 import { Sheet, SheetContent, SheetDescription, SheetHeader, SheetTitle, SheetTrigger } from '@/components/ui/sheet';
 import { useEffect, useState } from 'react';
 import { logoutAction } from '@/app/actions';
+import { LanguageSwitcher } from './language-switcher';
+import { useLanguage } from '@/hooks/use-language';
 
 export function Header() {
+  const { t } = useLanguage();
   const pathname = usePathname();
   const router = useRouter();
   const [isAuthenticated, setIsAuthenticated] = useState(false);
@@ -53,28 +56,30 @@ export function Header() {
 
             {/* Desktop Navigation */}
             <nav className="hidden md:flex items-center gap-2">
+            <LanguageSwitcher />
             <Button asChild variant="ghost" className="font-semibold text-base px-6 hover:bg-primary/10 hover:text-primary rounded-xl transition-all">
                 <Link href="/">
                 <Utensils className="mr-2 h-4 w-4" />
-                Menu
+                {t.nav.menu}
                 </Link>
             </Button>
             <Button asChild variant="ghost" className="font-semibold text-base px-6 hover:bg-primary/10 hover:text-primary rounded-xl transition-all">
                 <Link href="/rooms">
                 <Bed className="mr-2 h-4 w-4" />
-                Rooms
+                {t.nav.rooms}
                 </Link>
             </Button>
             {isAdminPage && isAuthenticated && (
                 <Button onClick={handleLogout} variant="ghost" className="font-semibold text-base px-6 text-destructive hover:bg-destructive/10 hover:text-destructive rounded-xl transition-all ml-2">
                     <LogOut className="mr-2 h-4 w-4" />
-                    Logout
+                    {t.nav.logout}
                 </Button>
             )}
             </nav>
 
             {/* Mobile Navigation */}
-            <div className="md:hidden">
+            <div className="flex items-center gap-2 md:hidden">
+              <LanguageSwitcher />
               {isClient && (
                 <Sheet>
                     <SheetTrigger asChild>
@@ -103,19 +108,19 @@ export function Header() {
                             <Button asChild variant="ghost" className="font-bold justify-start">
                                 <Link href="/">
                                 <Utensils className="mr-2 h-4 w-4" />
-                                Menu
+                                {t.nav.menu}
                                 </Link>
                             </Button>
                             <Button asChild variant="ghost" className="font-bold justify-start">
                                 <Link href="/rooms">
                                 <Bed className="mr-2 h-4 w-4" />
-                                Rooms
+                                {t.nav.rooms}
                                 </Link>
                             </Button>
                             {isAdminPage && isAuthenticated && (
                                 <Button onClick={handleLogout} variant="ghost" className="font-bold justify-start text-destructive hover:text-destructive">
                                     <LogOut className="mr-2 h-4 w-4" />
-                                    Logout
+                                    {t.nav.logout}
                                 </Button>
                             )}
                         </nav>

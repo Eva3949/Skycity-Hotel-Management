@@ -6,12 +6,14 @@ import { RoomCard } from "./room-card";
 import { Search, BedDouble, Users, Banknote } from "lucide-react";
 import { Input } from "@/components/ui/input";
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from "@/components/ui/select";
+import { useLanguage } from "@/hooks/use-language";
 
 interface RoomsDisplayProps {
   rooms: Room[];
 }
 
 export function RoomsDisplay({ rooms }: RoomsDisplayProps) {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const [bedType, setBedType] = useState('all');
   const [capacity, setCapacity] = useState('all');
@@ -33,11 +35,19 @@ export function RoomsDisplay({ rooms }: RoomsDisplayProps) {
 
   return (
     <div className="space-y-12">
+      <div id="rooms" className="text-center mb-12 scroll-mt-24">
+        <h2 className="text-4xl md:text-5xl font-headline font-bold tracking-tight text-foreground mt-2">
+          {t.rooms.title}
+        </h2>
+        <p className="mt-4 text-lg text-muted-foreground max-w-2xl mx-auto">
+          {t.rooms.description}
+        </p>
+      </div>
       <div className="grid grid-cols-1 md:grid-cols-3 gap-4 max-w-5xl mx-auto p-2 bg-slate-100/50 dark:bg-slate-900/50 backdrop-blur-xl rounded-2xl border border-white/20 dark:border-slate-800/50 shadow-2xl">
         <div className="relative group">
           <Search className="absolute left-4 top-1/2 -translate-y-1/2 h-4 w-4 text-slate-400 group-focus-within:text-primary transition-colors" />
           <Input
-            placeholder="Search rooms..."
+            placeholder={t.rooms.searchPlaceholder}
             className="pl-11 h-12 bg-transparent border-none focus-visible:ring-0 text-slate-700 dark:text-slate-200"
             value={searchQuery}
             onChange={(e) => setSearchQuery(e.target.value)}
@@ -48,11 +58,11 @@ export function RoomsDisplay({ rooms }: RoomsDisplayProps) {
           <SelectTrigger className="h-12 bg-white dark:bg-slate-800 border-none shadow-sm rounded-xl focus:ring-1 focus:ring-primary/20">
             <div className="flex items-center">
               <BedDouble className="mr-2 h-4 w-4 text-primary" />
-              <SelectValue placeholder="Bed Type" />
+              <SelectValue placeholder={t.rooms.bedType} />
             </div>
           </SelectTrigger>
           <SelectContent className="rounded-xl border-white/20 dark:border-slate-800/50 backdrop-blur-xl">
-            <SelectItem value="all">All Bed Types</SelectItem>
+            <SelectItem value="all">{t.rooms.allBedTypes}</SelectItem>
             {bedTypes.map((type) => (
               <SelectItem key={type} value={type.toLowerCase()}>
                 {type}
@@ -65,15 +75,15 @@ export function RoomsDisplay({ rooms }: RoomsDisplayProps) {
           <SelectTrigger className="h-12 bg-white dark:bg-slate-800 border-none shadow-sm rounded-xl focus:ring-1 focus:ring-primary/20">
             <div className="flex items-center">
               <Users className="mr-2 h-4 w-4 text-primary" />
-              <SelectValue placeholder="Min Capacity" />
+              <SelectValue placeholder={t.rooms.minCapacity} />
             </div>
           </SelectTrigger>
           <SelectContent className="rounded-xl border-white/20 dark:border-slate-800/50 backdrop-blur-xl">
-            <SelectItem value="all">Any Capacity</SelectItem>
-            <SelectItem value="1">1+ Guest</SelectItem>
-            <SelectItem value="2">2+ Guests</SelectItem>
-            <SelectItem value="3">3+ Guests</SelectItem>
-            <SelectItem value="4">4+ Guests</SelectItem>
+            <SelectItem value="all">{t.rooms.anyCapacity}</SelectItem>
+            <SelectItem value="1">1+ {t.rooms.guest}</SelectItem>
+            <SelectItem value="2">2+ {t.rooms.guests}</SelectItem>
+            <SelectItem value="3">3+ {t.rooms.guests}</SelectItem>
+            <SelectItem value="4">4+ {t.rooms.guests}</SelectItem>
           </SelectContent>
         </Select>
       </div>
@@ -89,13 +99,13 @@ export function RoomsDisplay({ rooms }: RoomsDisplayProps) {
           <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-slate-100 dark:bg-slate-800 mb-6">
             <Search className="h-10 w-10 text-slate-400" />
           </div>
-          <h3 className="text-2xl font-black text-slate-700 dark:text-slate-200">No matching rooms</h3>
-          <p className="text-slate-500 mt-2 max-w-sm mx-auto">We couldn't find any rooms matching your current filters. Try resetting them to see all options.</p>
+          <h3 className="text-2xl font-black text-slate-700 dark:text-slate-200">{t.rooms.noMatchingRooms}</h3>
+          <p className="text-slate-500 mt-2 max-w-sm mx-auto">{t.rooms.noMatchingRoomsDesc}</p>
           <button 
             onClick={() => {setSearchQuery(''); setBedType('all'); setCapacity('all');}}
             className="mt-8 px-8 py-3 bg-primary text-white font-bold rounded-full shadow-lg shadow-primary/20 hover:shadow-primary/40 transition-all active:scale-95"
           >
-            Reset All Filters
+            {t.rooms.resetFilters}
           </button>
         </div>
       )}

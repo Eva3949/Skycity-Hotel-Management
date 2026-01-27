@@ -6,6 +6,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { MenuItemCard } from "./menu-item-card";
 import { CakeSlice, Coffee, Soup, Utensils, Search } from "lucide-react";
 import { Input } from "@/components/ui/input";
+import { useLanguage } from "@/hooks/use-language";
 
 interface MenuDisplayProps {
   categories: Category[];
@@ -21,6 +22,7 @@ const getCategoryIcon = (categoryName: string) => {
 };
 
 export function MenuDisplay({ categories, items }: MenuDisplayProps) {
+  const { t } = useLanguage();
   const [searchQuery, setSearchQuery] = useState('');
   const defaultTab = categories.length > 0 ? categories[0].id : "";
 
@@ -34,12 +36,17 @@ export function MenuDisplay({ categories, items }: MenuDisplayProps) {
 
   return (
     <div className="space-y-12">
+      <div id="menu" className="text-center mb-12 scroll-mt-24">
+        <h2 className="text-4xl md:text-5xl font-headline font-bold tracking-tight text-foreground mt-2">
+          {t.menu.title}
+        </h2>
+      </div>
       <div className="relative max-w-xl mx-auto px-4 md:px-0">
         <div className="absolute inset-y-0 left-8 md:left-4 flex items-center pointer-events-none">
           <Search className="h-5 w-5 text-slate-400 group-focus-within:text-primary transition-colors" />
         </div>
         <Input
-          placeholder="Search our delicious menu..."
+          placeholder={t.menu.searchPlaceholder}
           className="pl-12 h-12 md:h-14 text-base md:text-lg rounded-2xl bg-white/50 dark:bg-slate-900/50 backdrop-blur-md border-white/20 dark:border-slate-800/50 shadow-xl focus:ring-primary/20 transition-all placeholder:text-slate-400"
           value={searchQuery}
           onChange={(e) => setSearchQuery(e.target.value)}
@@ -84,11 +91,11 @@ export function MenuDisplay({ categories, items }: MenuDisplayProps) {
                   <div className="inline-flex items-center justify-center w-16 h-16 rounded-full bg-slate-100 dark:bg-slate-800 mb-4">
                     <Utensils className="h-8 w-8 text-slate-400" />
                   </div>
-                  <h3 className="text-xl font-bold text-slate-600 dark:text-slate-400">No items found</h3>
+                  <h3 className="text-xl font-bold text-slate-600 dark:text-slate-400">{t.menu.noItems}</h3>
                   <p className="text-slate-500 dark:text-slate-500 mt-2 max-w-xs mx-auto">
                     {searchQuery 
-                      ? "We couldn't find any matches for your search in this category." 
-                      : "We're currently updating this category. Please check back later!"}
+                      ? t.menu.noMatches 
+                      : t.menu.updating}
                   </p>
                 </div>
               )}

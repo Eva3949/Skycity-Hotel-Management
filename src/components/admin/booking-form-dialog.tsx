@@ -37,6 +37,7 @@ import { useToast } from '@/hooks/use-toast';
 import { addBookingAction, updateBookingAction } from '@/app/actions';
 import type { Booking, Room, Customer } from '@/lib/types';
 import { useRouter } from 'next/navigation';
+import { useLanguage } from '@/hooks/use-language';
 
 interface BookingFormDialogProps {
   isOpen: boolean;
@@ -61,6 +62,7 @@ export function BookingFormDialog({
   rooms,
   customers,
 }: BookingFormDialogProps) {
+  const { t } = useLanguage();
   const { toast } = useToast();
   const router = useRouter();
   const form = useForm<z.infer<typeof formSchema>>({
@@ -95,36 +97,43 @@ export function BookingFormDialog({
     await action(formData);
 
     toast({
-      title: booking?.id ? 'Booking Updated' : 'Booking Added',
-      description: `The booking has been successfully ${booking?.id ? 'updated' : 'created'}.`,
+      title: booking?.id ? t.bookings.bookingUpdated : t.bookings.bookingAdded,
+      description: booking?.id ? t.bookings.bookingUpdateSuccess : t.bookings.bookingSuccess,
     });
+
     setIsOpen(false);
     router.refresh();
   }
 
   return (
     <Dialog open={isOpen} onOpenChange={setIsOpen}>
-      <DialogContent className="sm:max-w-md">
+      <DialogContent className="sm:max-w-[500px]">
         <DialogHeader>
-          <DialogTitle>{booking?.id ? 'Edit Booking' : 'Add New Booking'}</DialogTitle>
+          <DialogTitle>{booking?.id ? t.bookings.editBooking : t.bookings.addBooking}</DialogTitle>
           <DialogDescription>
             {booking?.id ? 'Update the details of this booking.' : 'Create a new room reservation.'}
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-4">
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6 py-4">
             <FormField
               control={form.control}
               name="customerId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Customer</FormLabel>
+                  <FormLabel>{t.bookings.customer}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger><SelectValue placeholder="Select a customer" /></SelectTrigger>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t.bookings.selectCustomer} />
+                      </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {customers.map((c) => <SelectItem key={c.id} value={c.id}>{c.name}</SelectItem>)}
+                      {customers.map((customer) => (
+                        <SelectItem key={customer.id} value={customer.id}>
+                          {customer.name}
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -136,37 +145,61 @@ export function BookingFormDialog({
               name="roomId"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Room</FormLabel>
+                  <FormLabel>{t.bookings.room}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger><SelectValue placeholder="Select a room" /></SelectTrigger>
+                      <SelectTrigger>
+                        <SelectValue placeholder={t.bookings.selectRoom} />
+                      </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {rooms.map((r) => <SelectItem key={r.id} value={r.id}>{r.name}</SelectItem>)}
+                      {rooms.map((room) => (
+                        <SelectItem key={room.id} value={room.id}>
+                          {room.name} ({room.bedType})
+                        </SelectItem>
+                      ))}
                     </SelectContent>
                   </Select>
                   <FormMessage />
                 </FormItem>
               )}
             />
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-2 gap-4">
               <FormField
                 control={form.control}
                 name="checkIn"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Check-in Date</FormLabel>
+                    <FormLabel>{t.bookings.checkIn}</FormLabel>
                     <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
-                          <Button variant={"outline"} className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
-                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date < new Date(new Date().setHours(0, 0, 0, 0))
+                          }
+                          initialFocus
+                        />
                       </PopoverContent>
                     </Popover>
                     <FormMessage />
@@ -178,18 +211,36 @@ export function BookingFormDialog({
                 name="checkOut"
                 render={({ field }) => (
                   <FormItem className="flex flex-col">
-                    <FormLabel>Check-out Date</FormLabel>
-                     <Popover>
+                    <FormLabel>{t.bookings.checkOut}</FormLabel>
+                    <Popover>
                       <PopoverTrigger asChild>
                         <FormControl>
-                          <Button variant={"outline"} className={cn("pl-3 text-left font-normal", !field.value && "text-muted-foreground")}>
-                            {field.value ? format(field.value, "PPP") : <span>Pick a date</span>}
+                          <Button
+                            variant={"outline"}
+                            className={cn(
+                              "w-full pl-3 text-left font-normal",
+                              !field.value && "text-muted-foreground"
+                            )}
+                          >
+                            {field.value ? (
+                              format(field.value, "PPP")
+                            ) : (
+                              <span>Pick a date</span>
+                            )}
                             <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                           </Button>
                         </FormControl>
                       </PopoverTrigger>
                       <PopoverContent className="w-auto p-0" align="start">
-                        <Calendar mode="single" selected={field.value} onSelect={field.onChange} initialFocus />
+                        <Calendar
+                          mode="single"
+                          selected={field.value}
+                          onSelect={field.onChange}
+                          disabled={(date) =>
+                            date <= (form.getValues('checkIn') || new Date())
+                          }
+                          initialFocus
+                        />
                       </PopoverContent>
                     </Popover>
                     <FormMessage />
@@ -197,18 +248,23 @@ export function BookingFormDialog({
                 )}
               />
             </div>
-             <FormField
+            <FormField
               control={form.control}
               name="status"
               render={({ field }) => (
                 <FormItem>
-                  <FormLabel>Status</FormLabel>
+                  <FormLabel>{t.bookings.status}</FormLabel>
                   <Select onValueChange={field.onChange} defaultValue={field.value}>
                     <FormControl>
-                      <SelectTrigger><SelectValue placeholder="Select status" /></SelectTrigger>
+                      <SelectTrigger>
+                        <SelectValue placeholder="Select status" />
+                      </SelectTrigger>
                     </FormControl>
                     <SelectContent>
-                      {['Confirmed', 'Checked-In', 'Checked-Out', 'Cancelled'].map((s) => <SelectItem key={s} value={s}>{s}</SelectItem>)}
+                      <SelectItem value="Confirmed">Confirmed</SelectItem>
+                      <SelectItem value="Checked-In">Checked-In</SelectItem>
+                      <SelectItem value="Checked-Out">Checked-Out</SelectItem>
+                      <SelectItem value="Cancelled">Cancelled</SelectItem>
                     </SelectContent>
                   </Select>
                   <FormMessage />
@@ -216,8 +272,11 @@ export function BookingFormDialog({
               )}
             />
             <DialogFooter>
-              <Button type="submit" disabled={form.formState.isSubmitting}>
-                {form.formState.isSubmitting ? 'Saving...' : 'Save Changes'}
+              <Button type="button" variant="outline" onClick={() => setIsOpen(false)}>
+                {t.bookings.cancel}
+              </Button>
+              <Button type="submit">
+                {booking?.id ? t.bookings.updateBooking : t.bookings.confirm}
               </Button>
             </DialogFooter>
           </form>

@@ -16,8 +16,8 @@ Effcient, mderhotel mnagement with rooms, okings, men iems,customers, nd admin r
 
 <p align="center">
   <img src="assets/images/shoot2.png" width="100%" />
-  <img src="assets/images/shoot1.png" width="30%" />
-  <img src="assets/images/shoot3.png" width="30%" />
+  <img src="assets/images/shoot1.png" width="45%" />
+  <img src="assets/images/shoot3.png" width="45%" />
 </p>
 ## ✨ Overview
 - End-to-end hotel management: ooms, bookings, custmers, mnu aegories,an items
@@ -141,6 +141,7 @@ Mde wth caref ffient hteloperations.
 
 ## � Contact 
 Email: samueleva3949@gmail.com
+
 
 
 
